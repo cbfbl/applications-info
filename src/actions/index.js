@@ -12,9 +12,16 @@ export const editApplication = (application) => {
     };
 };
 
-export const sortApplicationList = (sortBy) => {
+export const sortApplicationList = (sortByOption) => {
     return {
-        type: "SORT_APPLICATIONS",
-        payload: sortBy,
+        type: "SORT_APPLICATIONS_OPTION",
+        payload: sortByOption,
+    };
+};
+
+export const sortApplicationListOrder = (sortByOrder) => {
+    return {
+        type: "SORT_APPLICATIONS_ORDER",
+        payload: sortByOrder,
     };
 };

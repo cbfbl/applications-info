@@ -15,8 +15,15 @@ const currentApplication = (state = null, action) => {
     return state;
 };
 
-const currentSortBy = (state = "date", action) => {
-    if (action.type === "SORT_APPLICATIONS") {
+const sortByOption = (state = "date", action) => {
+    if (action.type === "SORT_APPLICATIONS_OPTION") {
+        return action.payload;
+    }
+    return state;
+};
+
+const sortByOrder = (state = true, action) => {
+    if (action.type === "SORT_APPLICATIONS_ORDER") {
         return action.payload;
     }
     return state;
@@ -25,6 +32,7 @@ const currentSortBy = (state = "date", action) => {
 export default combineReducers({
     applications: applicationsReducer,
     currentApplication,
-    currentSortBy,
+    sortByOption,
+    sortByOrder,
     form: formReducer,
 });

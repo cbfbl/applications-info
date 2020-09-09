@@ -9,9 +9,9 @@ class ApplicationsList extends React.Component {
         this.props.getApplications();
     }
 
-    getSortingFunction(sortBy, reverse = false) {
+    sortingFunction(sortBy, reverse = false) {
         const formattedSortBy = this.formatSortBy(sortBy);
-        return function (job1, job2) {
+        return (job1, job2) => {
             const res = job1[formattedSortBy] < job2[formattedSortBy];
             return reverse ? -res : res;
         };
@@ -45,11 +45,16 @@ class ApplicationsList extends React.Component {
         if (jobs.length === 0) {
             return <div>No applications</div>;
         }
-        const jobsRendered = jobs
-            .sort(this.getSortingFunction(this.props.sortBy))
-            .map((job) => {
-                return <ApplicationItem key={job.id} jobDetails={job} />;
-            });
+        const jobsSorted = jobs.sort((job1, job2) => {
+            const formattedSortBy = this.formatSortBy(this.props.sortByOption);
+            const res =
+                job1[formattedSortBy].toLowerCase() <
+                job2[formattedSortBy].toLowerCase();
+            return this.props.sortByOrder ? res : !res;
+        });
+        const jobsRendered = jobsSorted.map((job) => {
+            return <ApplicationItem key={job.id} jobDetails={job} />;
+        });
         return jobsRendered;
     }
 
@@ -66,7 +71,11 @@ class ApplicationsList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {applications: state.applications, sortBy: state.currentSortBy};
+    return {
+        applications: state.applications,
+        sortByOption: state.sortByOption,
+        sortByOrder: state.sortByOrder,
+    };
 };
 
 export default connect(mapStateToProps, {getApplications})(ApplicationsList);
